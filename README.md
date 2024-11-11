@@ -169,6 +169,133 @@ At the same time, please consider supporting Dify by sharing it on social media 
 
 [![Star History Chart](https://api.star-history.com/svg?repos=langgenius/dify&type=Date)](https://star-history.com/#langgenius/dify&Date)
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dify on AWS - Customized Deployment</title>
+</head>
+<body>
+
+  <!-- Cover Image -->
+  <img src="https://github.com/langgenius/dify/assets/13230914/f9e19af5-61ba-4119-b926-d10c4c06ebab" alt="Dify Cover Image" style="display: block; margin: 0 auto;">
+
+  <!-- Intro and Links -->
+  <p align="center">
+    📌 <a href="https://dify.ai/blog/introducing-dify-workflow-file-upload-a-demo-on-ai-podcast">Introducing Dify Workflow File Upload: Recreate Google NotebookLM Podcast</a>
+  </p>
+
+  <p align="center">
+    <a href="https://cloud.dify.ai">Dify Cloud</a> ·
+    <a href="https://docs.dify.ai/getting-started/install-self-hosted">Self-hosting</a> ·
+    <a href="https://docs.dify.ai">Documentation</a> ·
+    <a href="https://udify.app/chat/22L1zSxg6yW1cWQg">Enterprise inquiry</a>
+  </p>
+
+  <!-- Badge Links -->
+  <p align="center">
+    <a href="https://dify.ai" target="_blank">
+      <img alt="Static Badge" src="https://img.shields.io/badge/Product-F04438"></a>
+    <!-- Additional badges omitted for brevity -->
+  </p>
+
+  <!-- Readme Language Options -->
+  <p align="center">
+    <a href="./README.md"><img alt="README in English" src="https://img.shields.io/badge/English-d9d9d9"></a>
+    <!-- Additional language options omitted for brevity -->
+  </p>
+
+  <!-- Dify Overview -->
+  <p align="center">
+    <b>Dify</b> is an open-source LLM app development platform. Its intuitive interface combines agentic AI workflow, RAG pipeline, agent capabilities, model management, observability features, and more, letting you quickly go from prototype to production.
+  </p>
+
+  <!-- Quick Start -->
+  <h2>Quick Start</h2>
+  <p>Before installing Dify, make sure your machine meets the following minimum system requirements:</p>
+  <ul>
+    <li>CPU >= 2 Core</li>
+    <li>RAM >= 4 GiB</li>
+  </ul>
+
+  <p>The easiest way to start the Dify server is through <a href="docker/docker-compose.yaml">docker compose</a>. Before running Dify, make sure that <a href="https://docs.docker.com/get-docker/">Docker</a> and <a href="https://docs.docker.com/compose/install/">Docker Compose</a> are installed on your machine:</p>
+
+  <pre>
+    <code>
+      cd dify
+      cd docker
+      cp .env.example .env
+      docker compose up -d
+    </code>
+  </pre>
+
+  <p>After running, you can access the Dify dashboard in your browser at <a href="http://localhost/install">http://localhost/install</a> and start the initialization process.</p>
+
+  <!-- New Section: AWS Customized Deployment -->
+  <h2>AWS Customized Deployment</h2>
+  <p>This fork is designed for users who want to deploy Dify in a scalable, cloud-based environment using AWS and Docker. Below is a step-by-step guide to setting up Dify on AWS:</p>
+
+  <h3>1. Prerequisites</h3>
+  <p>Ensure you have the following installed and configured:</p>
+  <ul>
+    <li>Docker and Docker Compose (for local testing)</li>
+    <li>An AWS account</li>
+    <li>AWS CLI configured with necessary permissions</li>
+  </ul>
+
+  <h3>2. Clone and Customize the Repository</h3>
+  <p>Clone this forked repository, which includes AWS-specific configurations:</p>
+  <pre>
+    <code>
+      git clone https://github.com/yourusername/dify-aws-custom
+      cd dify-aws-custom
+    </code>
+  </pre>
+  <p>Update environment variables in the <code>.env</code> file to match your AWS setup and any custom configuration needs.</p>
+
+  <h3>3. Build and Push Docker Image to AWS ECR</h3>
+  <p>Create an ECR repository in AWS to store the Docker image, then build and push the image:</p>
+  <pre>
+    <code>
+      # Create ECR repository
+      aws ecr create-repository --repository-name dify-app
+      # Build the Docker image
+      docker build -t dify-app .
+      # Tag and push to ECR
+      docker tag dify-app:latest <your-aws-account-id>.dkr.ecr.<region>.amazonaws.com/dify-app:latest
+      docker push <your-aws-account-id>.dkr.ecr.<region>.amazonaws.com/dify-app:latest
+    </code>
+  </pre>
+
+  <h3>4. Deploy to AWS ECS</h3>
+  <p>Using the pushed Docker image, configure an ECS cluster for deployment:</p>
+  <pre>
+    <code>
+      # Step 1: Create ECS cluster
+      aws ecs create-cluster --cluster-name dify-cluster
+      # Step 2: Register task definition with ECR image
+      aws ecs register-task-definition --cli-input-json file://ecs-task-def.json
+      # Step 3: Run task on ECS cluster
+      aws ecs run-task --cluster dify-cluster --task-definition dify-task
+    </code>
+  </pre>
+
+  <p>For detailed ECS configurations, refer to the <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html">AWS ECS Documentation</a>.</p>
+
+  <h3>5. Configure HTTPS with NGINX (Optional)</h3>
+  <p>If you want to secure your Dify instance, set up HTTPS with NGINX and SSL certificates.</p>
+
+  <h3>6. Access Dify</h3>
+  <p>After the setup, navigate to your ECS instance's public IP in your browser to access the Dify dashboard and begin initialization.</p>
+
+  <!-- Seeking Help -->
+  <h3>Seeking Help</h3>
+  <p>Refer to our <a href="https://docs.dify.ai/getting-started/install-self-hosted/faqs">FAQ</a> if you encounter issues. For additional help, reach out to the <a href="#community--contact">community</a>.</p>
+
+  <!-- Key Features (Omitted for brevity) -->
+
+</body>
+</html>
 
 ## Security disclosure
 
